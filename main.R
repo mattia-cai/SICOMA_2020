@@ -42,3 +42,34 @@ source( "code/count_aggregates.R" )
 source( "code/compCaseData.R" )
 
 
+
+################
+### Modeling ###
+################
+
+# Key sector analysis (standardized price shock)
+source( "code/key_sectors.R" )
+
+# Compute within- and cross-industry price effects (Expanded with duration analysis in Nov 19)
+source( "code/priceImpacts.R" )
+
+# # Compute within- and cross-industry price effects for a couple of significant cases
+# source( "code/singleDecisions.R" )  # Could be probably eliminated
+
+# Price level changes: main tables
+source( "code/tables_like_book_chapter.R" )
+
+# Numerical example for report
+source( "code/numerical_example.R" )
+
+
+
+#############################
+### More stuff for report ###
+#############################
+
+# Main case descriptives
+source( "code/main_case_des.R" )
+
+# Industry-level price changes
+source( "code/price_by_industry_charts.R" )
