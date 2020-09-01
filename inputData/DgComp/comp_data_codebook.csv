@@ -1,1 +1,1 @@
-variable,column,descriptionid,1,Case No.name,2,Case Namenace2,3,NACE 2mkt,6,Relevant Market (mln EUR)duration,7,Duration according to entry barriers
+variable,column,descriptionid,1,Case No.name,2,Case Namenace2,3,NACE 2nace2_desc,4,Sector description (NACE 2)mkt,6,Relevant Market (mln EUR)duration,7,Duration according to entry barriersdp_min,8,Price increase (lower bound)dp_max,9,Price increase (upper bound)save_min,10,Customer savings (lower bound)save_max,11,Customer savings (upper bound)

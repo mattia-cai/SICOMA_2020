@@ -34,7 +34,7 @@ sheetCleanUp <- function( yr ){
   
   # Read the dataset
   s <- paste0( "Customer savings ", yr )
-  pathname <- "inputData/DgComp/JRC_v2 input data 2012-2019.xlsx"
+  pathname <- "inputData/DgComp/JRC_v3 input data 2012-2019.xlsx"
   dta <- read_excel( path = pathname, sheet = s, skip = 1, col_names = T )
   dta <- as.data.frame( dta )
   
@@ -186,8 +186,10 @@ dta.cases[ is.na( mkt ) ]
 
 # Reorder columns
 dta.cases <- dta.cases[ , c( "year", "type", "id", "name",
-                             "nace2_4d", "nace2_2d_a64",
-                             "mkt", "duration" ), with = F ] 
+                             "nace2_2d_a64", "nace2_4d", "nace2_desc", 
+                             "mkt", "duration",
+                             "dp_min", "dp_max",
+                             "save_min", "save_max" ), with = F ] 
 save( dta.cases, file = "intmData/compCaseData.RData" ) 
 write.csv( dta.cases, file = "intmData/compCaseData.csv", row.names = F, na = "" ) 
 
