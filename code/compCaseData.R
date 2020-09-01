@@ -49,19 +49,13 @@ dta.cases <- dta.cases[ ! is.na( mkt ) ]
 
 
 
-###############################
-### delta and T assumptions ###
-###############################
+##############################
+### Avoided price increase ###
+##############################
 
-# 17, Nov 27-th: sent an email to Adriaan to confirm this
-
-# Price overcharge
+# Price overcharge assumptions
 dta.cases[ type == "merger", delta_p := .03 ]
 dta.cases[ type == "cartel", delta_p := .15 ]
-
-# deterrence threshold
-dta.cases[ type == "merger", thr := 10 ]
-dta.cases[ type == "cartel", thr := 20 ]
 
 
 
@@ -305,17 +299,6 @@ dta.cases[ , go_all := eu28[ , sum( go_a64 ) ] ]
 any( na.omit( dta.cases[ ,  go4_a64_prod > go2_a64  ] ) )  # Should be F
 any( na.omit( dta.cases[ ,  go4_a24_prod > go2_a24  ] ) )  # Should be F
 
-# Deterred market -- Threshold
-dta.cases[ , cutoff := thr * mkt ]
-dta.cases[ , mkt_t_a64:= apply( dta.cases[ , .( go4_a64, cutoff ) ], 1, min ) ]
-dta.cases[ , mkt_t_a24:= apply( dta.cases[ , .( go4_a24, cutoff ) ], 1, min ) ]
-dta.cases[ , cutoff:= NULL ]
-
-# Unintended consequence
-dta.cases[ mkt > mkt_t_a64, ]
-dta.cases[ mkt > mkt_t_a64, mkt_t_a64 := mkt ]
-dta.cases[ mkt > mkt_t_a24, mkt_t_a24 := mkt ]
-
 # Logistic function (eq. 9)
 y.fun <- function( x, chi, ef, ny ){
   h.fun <- function( x, chi, ef, ny ){ 1 / ( ( 1 + exp( - chi * ( x - ef ) ) ) ^ (  1 / ny ) ) }
@@ -333,18 +316,8 @@ dta.cases[ mktD < 0 ]                # cases with mkt > GO4
 dta.cases[ mktD < 0, mktD := 0 ]
 
 # Market size with deterrence
-dta.cases[ , mkt_t_a64_log := mkt + mktD ]
-dta.cases[ , c( "y", "mktD" ) := NULL ]
-
-
-
-#######################################
-### Case contribution to Delta MUP  ###
-#######################################
-
-dta.cases[ , delta_mup_a64 := ( 1 / go ) * delta_p * ( 1 + mup_a24 ) * mkt_t_a64 ]
-dta.cases[ , delta_mup_a24 := ( 1 / go ) * delta_p * ( 1 + mup_a24 ) * mkt_t_a24 ]
-dta.cases[ , delta_mup_a64_log := ( 1 / go ) * delta_p * ( 1 + mup_a24 ) * mkt_t_a64_log ]
+dta.cases[ , mktT := mkt + mktD ]
+dta.cases[ , c( "y" ) := NULL ]
 
 
 
@@ -353,7 +326,11 @@ dta.cases[ , delta_mup_a64_log := ( 1 / go ) * delta_p * ( 1 + mup_a24 ) * mkt_t
 ############################################
 
 # Column order selection
-dta.cases <- dta.cases[ , .( id, type, year, duration, mkt, delta_p, thr, nace2_4d, nace2_2d_a64, nace2_2d_a24, mup_a24, prod4, prod2_a64, prod2_a24, go2_a64, go2_a24, go4_a64, go4_a64_notes, go4_a24, go4_a24_notes, go, mkt_t_a64, mkt_t_a24, mkt_t_a64_log, delta_mup_a64, delta_mup_a24, delta_mup_a64_log, go4_a64_prod, go4_a24_prod, va4, va2_a64, va2_a24, go4_a64_va, go4_a24_va, n4_a64, n4_a24, go4_a64_n4, go4_a24_n4 ) ]
+dta.cases <- dta.cases[ , .( id, type, year, duration, delta_p,
+                             mkt, mktD, mktT,
+                             nace2_4d,  nace2_2d_a24, nace2_2d_a64,
+                             mup_a24, go2_a24, go4_a24, go4_a24_notes, 
+                             go2_a64, go4_a64, go4_a64_notes, go ) ]
 setnames( dta.cases, "id", "case_id" )
 
 # Save as .RData

@@ -42,13 +42,9 @@ load( "intmData/IO_EU28_2014.RData" )
 # In the IO table L68 is broken into L68A and L68B
 # L68A is imputed rents, which in practice is just a bunch of zeros.
 # The only part I care about is L68B
-
 # In my dataset I have a unique L68 industry.
-# The result is mismatch in the code
-setdiff( dta.cases[ , unique( nace2_2d_a64 ) ], colnames( Vt ) ) # Should be T
-
-# With single assignment, I don't have any L68 cases
-setdiff( dta.cases[ , unique( nace2_2d_a64 ) ], colnames( Vt ) ) # Should be T
+# We don't have any L68 cases, it seems
+setdiff( dta.cases[ , unique( nace2_2d_a64 ) ], colnames( Vt ) ) # Should be empty
 
 # But just in case...
 dta.cases[ nace2_2d_a64 == "L68", nace2_2d_a64 := "L68B" ]
@@ -64,17 +60,15 @@ all( dta.cases[ , unique( nace2_2d_a64 ) ] %in% colnames( Vt ) ) # Should be T
 dta.cases[ , case.count := 1 ]
 dta <- dta.cases[ , .( case.count = sum( case.count ), 
                        mkt_none = sum( mkt ), 
-                       mkt_threshold = sum( mkt_t_a64 ),
-                       mkt_logistic = sum( mkt_t_a64_log ),
+                       mkt_logistic = sum( mktT ),
                        dp_none = weighted.mean( x = delta_p, w = mkt ),
-                       dp_threshold = weighted.mean( x = delta_p, w = mkt_t_a64 ),
-                       dp_logistic = weighted.mean( x = delta_p, w = mkt_t_a64_log ),
+                       dp_logistic = weighted.mean( x = delta_p, w = mktT ),
                        go2_a64 = mean( go2_a64 ) ),
                   by = .( year, nace2_2d_a64 ) ]
 
 # At a first glance, it seems ok
-dta.cases[ , .( mkt_none = sum( mkt ), mkt_threshold = sum( mkt_t_a64 ), mkt_logistic = sum( mkt_t_a64_log ) ) , by = year ]
-dta[ , .( mkt_none = sum( mkt_none ), mkt_threshold = sum( mkt_threshold ), mkt_logistic = sum( mkt_logistic ) ), by = year ]
+dta.cases[ , .( mkt_none = sum( mkt ), mkt_logistic = sum( mktT ) ) , by = year ]
+dta[ , .( mkt_none = sum( mkt_none ), mkt_logistic = sum( mkt_logistic ) ), by = year ]
 
 # Reshape from wide to long
 dta <- copy( reshape( dta, direction = "long",
@@ -82,7 +76,7 @@ dta <- copy( reshape( dta, direction = "long",
                         grep( "mkt", colnames( dta ), value = T ),
                         grep( "dp", colnames( dta ), value = T) ),
                       v.names = c( "mkt", "dp" ) ,
-                      times = c( "none", "threshold", "logistic" ),
+                      times = c( "none", "logistic" ),
                       timevar = "deterrence" ) )
 
 
@@ -104,11 +98,9 @@ fun <- function( t ){
   dt <- dta.cases[ t >= year & t <= through, ] # cases producing effects in year t
   dt <- dt[ , .( case.count = sum( case.count ), 
                  mkt_none = sum( mkt ), 
-                 mkt_threshold = sum( mkt_t_a64 ),
-                 mkt_logistic = sum( mkt_t_a64_log ),
+                 mkt_logistic = sum( mktT ),
                  dp_none = weighted.mean( x = delta_p, w = mkt ),
-                 dp_threshold = weighted.mean( x = delta_p, w = mkt_t_a64 ),
-                 dp_logistic = weighted.mean( x = delta_p, w = mkt_t_a64_log ),
+                 dp_logistic = weighted.mean( x = delta_p, w = mktT ),
                  go2_a64 = mean( go2_a64 ) ),
             by = .( nace2_2d_a64 ) ]
   dt <- cbind( year = t, dt )
@@ -125,7 +117,7 @@ dta1 <- copy( reshape( dta1, direction = "long",
                          grep( "mkt", colnames( dta1 ), value = T ),
                          grep( "dp", colnames( dta1 ), value = T) ),
                        v.names = c( "mkt", "dp" ) ,
-                       times = c( "none", "threshold", "logistic" ),
+                       times = c( "none", "logistic" ),
                        timevar = "deterrence" ) )
 
 
