@@ -117,16 +117,6 @@ dta.cases[ is.na( nace2 ), nace2 := "K.64.30" ]
 
 
 
-###########################
-### Typo in Nace 2 code ###
-###########################
-
-# H.77.11 does not exist. It's N.77.11
-dta.cases[ year == 2018 & id == "M. 8744" & nace2 == "H.77.11" ]
-dta.cases[ year == 2018 & id == "M. 8744" & nace2 == "H.77.11", nace2 := "N.77.11" ]
-
-
-
 #################################
 ### 4-digit NACE2 identifiers ###
 #################################

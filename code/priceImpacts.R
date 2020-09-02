@@ -43,11 +43,11 @@ load( "intmData/IO_EU28_2014.RData" )
 # L68A is imputed rents, which in practice is just a bunch of zeros.
 # The only part I care about is L68B
 # In my dataset I have a unique L68 industry.
-# We don't have any L68 cases, it seems
-setdiff( dta.cases[ , unique( nace2_2d_a64 ) ], colnames( Vt ) ) # Should be empty
-
-# But just in case...
+# We don't have any L68 cases, it seems, but just in case...
+setdiff( dta.cases[ , unique( nace2_2d_a64 ) ], colnames( Vt ) )
 dta.cases[ nace2_2d_a64 == "L68", nace2_2d_a64 := "L68B" ]
+
+# Check
 all( dta.cases[ , unique( nace2_2d_a64 ) ] %in% colnames( Vt ) ) # Should be T
 
 
