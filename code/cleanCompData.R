@@ -127,6 +127,10 @@ dta.cases[ is.na( nace2 ), nace2 := "K.64.30" ]
 id <- dta.cases[ , nace2 ]
 #id <- sort( unique( unlist( id0 ) ) ) 
 
+# Remove some funny characters
+id[ grep( "\r\n", id ) ]
+id <- gsub( "\r\n", "", id ) 
+
 # remove the dots
 id4 <- strsplit( x = id, split = ".", fixed = T ) 
 
@@ -140,9 +144,6 @@ id4 <- sapply( id4, function( x ) paste( x, collapse = "" ) )
 setdiff( id4, sbs )
 # Nope :(
 # These cases, however, are in sectors outside the scope of the SBS,
-
-# Now it is better: these are all out of SBS scope
-setdiff( id4, sbs )
 
 # replace the codes
 dta.cases[ , nace2_4d := id4 ]
