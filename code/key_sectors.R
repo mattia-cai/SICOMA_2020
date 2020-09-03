@@ -311,26 +311,3 @@ split( dta[ , shocked_labs ], dta[ , conc3.pct ] )
 ############
 
 write.csv( dta, "results/spillover_intensity.csv", row.names = F, na = "" )
-
-
-
-
-
-
-
-
-# 
-# #######################
-# ### Tentative chart ###
-# #######################
-# 
-# dta[ , plot( spill.ratio, spillover.conc.norm, col = "white", ylab = "Concentration (Herfindahl normal.)", 
-#              xlab = "Spillover" ) ]
-# dta[ , text( spill.ratio, spillover.conc.norm, labels = nace2 ) ]
-# abline( v = dta[ , mean( - spillover ) ], col = "red" ) 
-# abline( h = dta[ , mean( spillover.conc.norm ) ], col = "red" ) 
-# 
-# 
-# 
-# dta[, plot( go2_a64, spill.ratio)]
-# summary( dta[, lm( spill.ratio ~ go2_a64 ) ] )

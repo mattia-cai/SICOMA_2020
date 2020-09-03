@@ -33,9 +33,6 @@ source( "code/count_aggregates.R" )
 ### Competition case dataset ###
 ################################
 
-# # In earlier versions, all these tasks were carried out in a single file
-# source( "code/compCaseData.R" )
-
 # Merge the various datasets
 source( "code/full_dataset.R" )
 
@@ -48,7 +45,31 @@ source( "code/logistic_deterrence.R" )
 # Avoided price increase assumptions + some dataset formatting
 source( "code/compCases.R" )
 
+# # In earlier versions, all these tasks were carried out in a single file
+# source( "code/compCaseData.R" )
 
+
+
+############################
+### Descriptive analysis ###
+############################
+
+# # Main case descriptives (legacy version)
+# source( "code/main_case_des.R" )
+
+# Total affected market size by type (merger/cartel) and year
+source( "code/mkt_by_type_plot.R" )  # Figure III-1 in 2019 FR
+source( "code/mkt_by_type_table.R" ) # Table III-1 in 2019 FR  
+
+# Affected market size by industry and type of case
+source( "code/cases_by_industry.R" ) # Figures III-2/3 in 2019 FR
+
+# Average case duration
+source( "code/average_duration.R" ) # Table III-2 in 2019 FR
+
+# Distribution of mkt/GO4
+source( "code/mkt_&_go4_table.R" )  # Table III-3 in FR 2019
+source( "code/mkt_&_go4_histograms.R" ) # Figures III-4 and III-6 
 
 
 
@@ -77,8 +98,6 @@ source( "code/numerical_example.R" )
 ### More stuff for report ###
 #############################
 
-# Main case descriptives
-source( "code/main_case_des.R" )
 
 # Industry-level price changes
 source( "code/price_by_industry_charts.R" )

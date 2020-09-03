@@ -4,6 +4,7 @@ rm( list = ls( ) )
 
 # Dependencies
 require( "data.table" )
+require( "openxlsx" )
 
 # Case dataset
 load( file = "intmData/logistic_deterrence.RData", verbose = T )
