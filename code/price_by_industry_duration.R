@@ -98,7 +98,7 @@ for ( t in yr.rng ){
   tlt <- as.character( t )
   if( t == 9999 ){ tlt <- "Average (2012-2018)"}
   
-  png( file = paste0( "results/industry_prices/prices_", t, ".png"), width = 1200, height = 1000  )
+  png( file = paste0( "results/industry_prices/prices_", t, "_duration.png"), width = 1200, height = 1000  )
   print(
     ggplot( data = dta[ year == t ] ) +
       geom_bar( aes( x = ind, y = dp, fill = Effect ),

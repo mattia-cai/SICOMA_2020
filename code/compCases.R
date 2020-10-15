@@ -13,6 +13,11 @@ load( file = "intmData/logistic_deterrence.RData", verbose = T )
 dta.cases[ type == "merger", delta_p := .03 ]
 dta.cases[ type == "cartel", delta_p := .15 ]
 
+
+# In the IO table L68 is broken into L68A and L68B. L68A is imputed rents, which in practice is just a bunch of zeros. The part I care about is L68B. We don't seem to have any L68 cases, it seems, but just in case...
+dta.cases[ nace2_2d_a64 == "L68"  ]
+dta.cases[ nace2_2d_a64 == "L68", nace2_2d_a64 := "L68B" ]
+
 # Column order selection
 dta.cases <- dta.cases[ , .( id, type, year, nace2_4d,
                              duration, delta_p, mkt, mktD, mktT,
@@ -24,7 +29,7 @@ setnames( dta.cases, "id", "case_id" )
 save( dta.cases, file = "outputData/compCases.RData" )
 
 # Export to Excel (with codebook)
-cb <- read_excel( path = "inputData/DgComp/case_data_codebook.xlsx", sheet = 1 )
+cb <- readxl::read_excel( path = "inputData/DgComp/case_data_codebook.xlsx", sheet = 1 )
 cb <- as.data.table( cb )
 
 # Write list to excel

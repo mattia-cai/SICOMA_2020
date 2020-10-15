@@ -10,7 +10,7 @@ load( file = "intmData/go4_calculations.RData", verbose = T )
 
 # logistic function parameters
 B <- data.frame( chi = c( 100, 100 ), 
-            ef = c( .0254, .0153 ),
+            ef = c( 0.025906, 0.014891 ),  # Updated following Filippo's email of Sep 18
             ny = c( 1, 1 ) )
 rownames( B ) <- c( "M", "C" )
 
