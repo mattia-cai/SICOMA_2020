@@ -53,3 +53,47 @@ dta.cases[ , table( go4_a24_notes, go4_a64_notes ) ]
 
 # Save
 save( dta.cases, file = "intmData/go4_calculations.RData" )
+
+
+
+
+
+##############################################
+### Nuisance: large cases in small sectors ###
+##############################################
+
+### Nov 30th, 2020 update --- THIS IS TEMPORARY ###
+
+# Comments to COMP:
+# -- Merge with markup?
+# -- Format of input data suitable for processing
+# -- "A.T. 39639" vs. "AT 39639" 
+
+# In some cases, affected market size is larger than estimated go4
+dta.cases[ mkt > go4_a64 ]
+
+# I will consider a fix proposed by in Adriaan's email of Nov 12th, 2020. Assign multiple code to these cases and assign sum of GO4 over sectors
+multicode <- read.csv( "inputData/DgComp/201112_cases_with_multiple_nace2_code.csv", header = T, stringsAsFactors = F )
+multicode <- as.data.table( multicode )
+multicode <- melt( multicode, id.vars = c( "Year", "Case.number" ) )
+names( multicode ) <-  tolower( names( multicode ) )
+setnames( multicode, old = c( "case.number", "value" ), new = c( "id", "nace2_4d" ) )
+multicode[ , variable := NULL ]
+
+# Let's see if I already have these nace2 codes covered in the case data:
+setdiff( multicode[ , nace2_4d ], dta.cases[ , nace2_4d ] ) # not too bad
+tmp <- unique( dta.cases[, .( nace2_4d, go4_a64 ) ] )
+( multicode <- merge( multicode, tmp, by = "nace2_4d", all.x = TRUE ) )
+# For the time being, the rest of this calculation is done manually in excel
+
+# Fix manually Est. GO4
+go4revised <- c( 17816, 18652, 80098, 47680, 78119 ) 
+index <- c( "A.T. 39639", "M.6541", "M.7881", "M.8480", "M. 8785" )
+dta.cases[ , go4_rev := go4_a64 ]
+dta.cases[ , tmp := go4revised[ match( dta.cases[ , id ], index ) ] ]
+dta.cases[ !is.na( tmp ), go4_rev := tmp ]
+dta.cases[, tmp := NULL ]
+
+# COMMENT THIS OUT IF NECESSARY
+#dta.cases[, go4_a64 := go4_rev ]
+save( dta.cases, file = "intmData/go4_calculations.RData" )

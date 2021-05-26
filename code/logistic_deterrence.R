@@ -14,6 +14,14 @@ B <- data.frame( chi = c( 100, 100 ),
             ny = c( 1, 1 ) )
 rownames( B ) <- c( "M", "C" )
 
+
+# ### COMMENT OUT IF NECESSARY ###
+# # Nov 2020 update: with multisector GO4 calculation for 5 cases (Filippo's email of Nov 20th)
+# B <- data.frame( chi = c( 100, 100 ), 
+#                  ef = c( 0.025563, 0.014844 ),  # Updated following Filippo's email of Sep 18
+#                  ny = c( 1, 1 ) )
+# rownames( B ) <- c( "M", "C" )
+
 # Checks
 any( na.omit( dta.cases[ ,  go4_a64_prod > go2_a64  ] ) )  # Should be F
 any( na.omit( dta.cases[ ,  go4_a24_prod > go2_a24  ] ) )  # Should be F
